@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dice Roller</title>
+</head>
+<body>
+    <h1>Dice Roller</h1>
+    <button id="rollButton">Roll Dice</button>
+    <div id="diceContainer"></div>
+
+    <script>
+        function start() {
+            var button = document.getElementById("rollButton");
+            button.addEventListener("click", rollDice, false);
+        }
+
+        function rollDice() {
+            var diceResults = [];
+            var numDice = 12; // Number of dice to roll
+            var diceContainer = document.getElementById("diceContainer");
+            diceContainer.innerHTML = ""; // Clear previous dice images
+
+            // Roll the dice and store the results
+            for (var i = 0; i < numDice; i++) {
+                var result = Math.floor(Math.random() * 6) + 1; // Simulating a six-sided die
+                diceResults.push(result);
+            }
+
+            // Calculate the probability of getting three of a kind (e.g., three 1s, three 2s, etc.)
+            var faceToCheck = 3; // Change this to the desired face you want to check (1 for face 1, 2 for face 2, etc.)
+            var count = diceResults.filter(face => face === faceToCheck).length;
+            var probability = calculateProbability(count, numDice);
+
+            // Display results or update the UI with the probability
+            updateProbabilityUI(probability);
+
+            // Update the images of the rolled dice
+            for (var j = 0; j < numDice; j++) {
+                setImage(j + 1, diceResults[j], diceContainer);
+            }
+        }
+
+        function calculateProbability(count, total) {
+            // Calculate probability
+            return (count / total) * 100;
+        }
+
+        function updateProbabilityUI(probability) {
+            // Update the UI with the calculated probability
+            console.log("Probability of getting three of a kind:", probability.toFixed(2), "%");
+            // You can display this probability on your webpage as needed
+        }
+
+        function setImage(dieNumber, face, container) {
+            // Assuming dieNumber ranges from 1 to 12 and face ranges from 1 to 6 representing each face of the die
+            var imgElement = document.createElement("img");
+            imgElement.src = "die" + face + ".png"; // Assuming your image filenames are die1.png, die2.png, etc.
+            imgElement.alt = "Face " + face;
+            container.appendChild(imgElement);
+        }
+
+        window.addEventListener("load", start, false);
+    </script>
+</body>
+</html>
